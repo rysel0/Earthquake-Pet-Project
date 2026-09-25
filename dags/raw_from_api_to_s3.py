@@ -17,7 +17,7 @@ SOURCE = "earthquake"
 args = {
     "owner": OWNER,
     "retries": 3,
-    "start_date": pendulum.datetime(2026, 9, 24, tz="Europe/Moscow"),
+    "start_date": pendulum.datetime(2026, 9, 18, tz="Europe/Moscow"),
     "retry_delay": pendulum.duration(hours=1),
 }
 
@@ -59,7 +59,9 @@ with DAG(
     default_args=args,
     tags = ["s3"],
     schedule="0 5 * * *",
-    catchup=False,
+    catchup=True,
+    max_active_tasks=1,
+    max_active_runs=1,
 ) as dag:
     
     start_task = EmptyOperator(
